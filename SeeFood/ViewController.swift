@@ -14,12 +14,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var imageView: UIImageView!
     let imagePicker = UIImagePickerController()
     
+    @IBOutlet weak var navigationBar: UINavigationItem!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         imagePicker.delegate = self
         imagePicker.sourceType = .camera
         imagePicker.allowsEditing =  false
+
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = UIColor.gray
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
+        
     }
     // what to do when the user has taken a photo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -40,13 +49,34 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
     }
     
+    
     func detect(image: CIImage) {
         do {
+            
             let model = try VNCoreMLModel(for: Inceptionv3.init(configuration: MLModelConfiguration()).model)
             let request = VNCoreMLRequest(model: model) { request, error in
                 let results = request.results as? [VNClassificationObservation]
                 if let firstResult = results?.first {
-                    self.navigationItem.title = firstResult.identifier
+                    
+                    if firstResult.identifier.contains("hotdog") {
+                        self.navigationItem.title = "Hotdog!"
+                        let appearance = UINavigationBarAppearance()
+                        appearance.backgroundColor = UIColor.green
+                        self.navigationController?.navigationBar.standardAppearance = appearance
+                        self.navigationController?.navigationBar.compactAppearance = appearance
+                        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+                    } else {
+                        self.navigationItem.title = "Not Hotdog!"
+                        let appearance = UINavigationBarAppearance()
+                        appearance.backgroundColor = UIColor.red
+                        self.navigationController?.navigationBar.standardAppearance = appearance
+                        self.navigationController?.navigationBar.compactAppearance = appearance
+                        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+                        
+
+
+
+                    }
                 }
             }
             let handler = VNImageRequestHandler(ciImage: image)
