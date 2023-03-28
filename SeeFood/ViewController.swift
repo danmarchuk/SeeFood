@@ -46,9 +46,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         // dismiss the image picker
         imagePicker.dismiss(animated: true)
-        
     }
-    
     
     func detect(image: CIImage) {
         do {
@@ -72,10 +70,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         self.navigationController?.navigationBar.standardAppearance = appearance
                         self.navigationController?.navigationBar.compactAppearance = appearance
                         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
-                        
-
-
-
                     }
                 }
             }
@@ -85,8 +79,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         } catch {
             print(error)
         }
-        
-        
     }
     
 
